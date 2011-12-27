@@ -5,11 +5,26 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import sun.misc.Regexp;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ProxyDefLoader {
 	private ArrayList<ProxyDefinition> proxyDefs;
+	
+	private Pattern linePattern;
+	
+	ProxyDefLoader()
+	{
+		String sep = "\u0020";
+		String fieldPattern = "([^" + sep + "]*)";
+		String patternStr = sep;
+		
+		for(int i = 0; i < 15; i++) {
+			patternStr += fieldPattern + sep;
+		}
+		
+		linePattern = Pattern.compile(patternStr);	
+	}
 	
 	void load(String fileName)
 	{
@@ -31,6 +46,8 @@ public class ProxyDefLoader {
 	}
 
 	private void processLine(String line) {
-		//Regexp re = "\u20([~\u20])\u20"
+		Matcher matcher = linePattern.matcher(line);
+		
+		// todo process
 	}
 }
