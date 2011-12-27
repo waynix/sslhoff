@@ -32,6 +32,15 @@ public class Main
 			System.out.println(def);
 		}
 		
+		SiteChecker checker = new SiteChecker("https://www.google.com", proxyDefs);
+		
+		try {
+			checker.check();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 //		try
 //		{
 //		System.out.println("Welcome to SSLhoff");

@@ -1,1 +1,55 @@
-TODO
+
+          [ sslhoff 0.01 ]
+          [  2011-12-27  ]
+
+  iiiiiiiiLtLGDGiitGiiiiiiiiiiiiii
+  iiiiifGtfGiGDijjLEiiiiiiiiiiiiii
+  iiiifLtEL;LGLGDDiEDiiiiiiiiiiiii
+  iiiiL;G;LDDE#tGEDDKLEDjiiiiiiiii
+  iiLfDDEGEDKfj,KW#LtKEELtjiiiiiii
+  iiLD;DGWWKtjGEEEWDDDDtEfiiiiiiii
+  iiLjGDWGKfLEDLELK#EKLDDKiiiiiiii
+  iiLEEWEfWWW#KKWGWDKWKEEKfiiiiiii
+  iiLDEDEKWKWWKWKDWKEK#DW#Ktiiiiii
+  iiLDDfKGKEEGDLjLDKKKWW#WKiiiiiii
+  iijWDEGGWDGKD;ijjLEE##WWjtiiiiii
+  iif##KKG#LDfi;;itjGWW#WWftiiiiii
+  iiG##WKEtt;;,,;itffG##WWtitiiiii
+  iiL##WDjti;,,,;tGGLGK#WWjtitiiii
+  iiiW#WGGDLji;tGGDffGKW#Wtitiiiii
+  iiL#WWDfGfGftjt.ittLWGWWWWWWiiii
+  iiii##Ettiiiiii;,;tGDW###W#WWiii
+  iiii##ft;,;tijt;;;jDW#######Wtii
+  iiiiWWWLi;,jttj,;ijG#########Wti
+  iiiiii#Gji;ji;fiiifG##########Ki
+  iiiiDW#WLttijjftitfG###########i
+  iiiiD###ftttjttjjjLG##########WW
+  iiiE####LjtfLftjijLK############
+  iij#####WfjtttfitfEK############
+  iiW#####Wiit;iiiiKEEK###########
+  iDW#####W#Gfii;tDEEKE###########
+  EWW#####W#DGGffEKEEKE##K########
+  EK######K#WGGDEEEEEED#WD########
+  #f##K###W##EGGLGEGKDDK#DEWW#####
+  K##KD######WGGGLDDDGGG#WW#######
+  ###DK#######KGGiiGGGGG#WWK######
+
+  Looking for freedom of security.
+
+
+          concept: Nine99
+
+      code: waynix & sbeschke
+
+
+
+sslhoff is a program that connects to a list of HTTPS websites through a list of
+proxy servers to find out man-in-the-middle attacks.
+
+
+  Get the newest version at https://github.com/waynix/sslhoff
+
+
+  usage:
+
+sslhoff -$websitelist -$proxylist -$reportfile
