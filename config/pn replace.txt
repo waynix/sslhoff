@@ -1,0 +1,2 @@
+what:(<rule from=".*)\n([^<>]*>)
+with:\1\2

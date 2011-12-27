@@ -1,0 +1,1 @@
+cat %1 | grep to= | grep https  | grep -v $2 > outshell.txt
