@@ -18,10 +18,9 @@ public class SslProxyConnect
 {
 	private Proxy transceiver;
 
-	public SslProxyConnect(String address, int port, Proxy.Type proxytype)
+	public SslProxyConnect(ProxyDefinition proxyDef)
 	{
-		SocketAddress sa = new InetSocketAddress(address, port);
-		transceiver = new Proxy(proxytype, sa);
+		transceiver = new Proxy(proxyDef.getType(), proxyDef.getAddress());
 	}
 
 	public String connectTo(String urlString) throws Exception
