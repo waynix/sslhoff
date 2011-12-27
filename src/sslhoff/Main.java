@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /***
  * SSLhoff
@@ -20,29 +22,27 @@ public class Main
 	 */
 	public static void main(String[] args)
 	{
-//		try
-//		{
-//			BufferedReader n = new BufferedReader(new FileReader(args[0]));
-//			
-//		} catch (FileNotFoundException e)
-//		{
-//			System.out.println("Inputfile not found");
-//			return;
-//		}
-		
-		try
-		{
-		System.out.println("Welcome to SSLhoff");
-		SslProxyConnect tester = new SslProxyConnect(new ProxyDefinition(new InetSocketAddress("203.12.220.48", 80), Proxy.Type.HTTP));
-		
-		System.out.println(tester.connectTo("https://rupek.net"));
-		
-		} catch (Exception e)
-		{
-			// TODO Auto-generated catch block
-			System.out.println(e.getMessage());
-		}
 
+		ProxyDefLoader loader = new ProxyDefLoader();
+		loader.load(args[0]);
+		
+		ArrayList<ProxyDefinition> proxyDefs = loader.getProxyDefs();
+		Iterator<ProxyDefinition> it = proxyDefs.iterator();
+		
+		while(it.hasNext()) {
+			ProxyDefinition def = it.next();
+			System.out.println(def);
+		}
+		
+		SiteChecker checker = new SiteChecker("https://www.google.com", proxyDefs);
+		
+		try {
+			checker.check();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }

@@ -25,6 +25,8 @@ public class SslProxyConnect
 
 	public String connectTo(String urlString) throws Exception
 	{
+		System.out.println("Connecting to " + urlString + " via " + transceiver);
+		
 		String resp = "";
 
 		URL url;
@@ -78,11 +80,14 @@ public class SslProxyConnect
 		} catch (MalformedURLException mue)
 		{
 			mue.printStackTrace();
+			throw mue;
 		} catch (IOException ioe)
 		{
-			ioe.printStackTrace();
+			System.out.println("IOException connecting via " + transceiver);
+			return "";
 		}
 
+		System.out.println("Success connecting via " + transceiver);
 		return resp;
 	}
 

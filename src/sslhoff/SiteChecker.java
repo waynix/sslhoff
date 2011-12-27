@@ -21,9 +21,8 @@ public class SiteChecker {
 		Iterator<ProxyDefinition> it = proxyDefs.iterator();
 		while(it.hasNext())
 		{
-			ProxyDefinition proxyDef = it.next();
-			SslProxyConnect connector = new SslProxyConnect(proxyDef);
-			connector.connectTo(siteUrl);
+			Thread th = new Thread(new SiteCheckerRunnable(it.next(), this.siteUrl));
+			th.start();
 		}
 	}
 }

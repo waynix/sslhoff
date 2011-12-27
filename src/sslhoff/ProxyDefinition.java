@@ -28,4 +28,8 @@ public class ProxyDefinition {
 	public void setType(Proxy.Type type) {
 		this.type = type;
 	}
+	
+	public String toString() {
+		return address.toString() + type.toString();
+	}
 }
