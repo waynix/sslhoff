@@ -31,7 +31,6 @@ public class SslProxyConnect
 		HttpsURLConnection urlConn;
 
 		DataInputStream input;
-		String str = "";
 
 		try
 		{
@@ -56,45 +55,23 @@ public class SslProxyConnect
 			urlConn.setDoInput(true);
 			urlConn.setUseCaches(false);
 
-			urlConn.setRequestProperty("Content-Type",
-					"application/x-www-form-urlencoded");
+			urlConn.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded");
+			
 			input = new DataInputStream(urlConn.getInputStream());
 
-			while (null != ((str = input.readLine())))
+			byte[] site = new byte[300];
+			
+			while (0!=input.read(site, 0, 300))
 			{
-				if (str.length() > 0)
-				{
-					str = str.trim();
-					if (!str.equals(""))
-					{
-						// System.out.println(str);
-						resp += str;
-					}
-				}
+				resp += site;	
 			}
+			
+			
 			X509Certificate[] certlist = (X509Certificate[]) urlConn
 					.getServerCertificates();
-
-			// BASE64EncoderStream b64 = new BASE64EncoderStream(System.out);
 			for (X509Certificate x509Certificate : certlist)
 			{
-				PublicKey pk = x509Certificate.getPublicKey();
-				if(pk instanceof RSAPublicKey)
-				{
-				RSAPublicKey k = (RSAPublicKey) pk;
-				System.out.println(k.getModulus().toString(16));
-				}
-				if(pk instanceof DSAPublicKey)
-				{
-					DSAPublicKey k = (DSAPublicKey) pk;
-					System.out.println("DSA G:"+k.getParams().getG().toString(16));
-					System.out.println("DSA P:"+k.getParams().getP().toString(16));
-					System.out.println("DSA Q:"+k.getParams().getQ().toString(16));
-					
-				
-				}
-				
-
+				//TODO Log This
 			}
 			System.out.println();
 			input.close();
@@ -109,8 +86,7 @@ public class SslProxyConnect
 		return resp;
 	}
 
-	// Just add these two functions in your program
-
+	
 	public static class miTM implements javax.net.ssl.TrustManager,
 			javax.net.ssl.X509TrustManager
 	{
