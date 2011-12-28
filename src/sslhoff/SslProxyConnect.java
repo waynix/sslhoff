@@ -2,17 +2,11 @@ package sslhoff;
 
 import java.io.*;
 import java.net.*;
-import java.security.PublicKey;
-import java.security.Security;
-import java.security.Provider;
 import java.security.cert.X509Certificate;
-import java.security.interfaces.DSAPublicKey;
-import java.security.interfaces.RSAPublicKey;
-import java.util.*;
+import java.util.NoSuchElementException;
+
 
 import javax.net.ssl.*;
-
-import com.sun.xml.internal.messaging.saaj.packaging.mime.util.BASE64EncoderStream;
 
 public class SslProxyConnect
 {
@@ -27,7 +21,6 @@ public class SslProxyConnect
 
 	public String connectTo(String urlString) throws Exception
 	{
-		System.out.println("Connecting to " + urlString + " via " + transceiver);
 		
 		String resp = "";
 
@@ -86,15 +79,19 @@ public class SslProxyConnect
 					
 				}
 			}
-			System.out.println();
+			urlConn.disconnect();
 			
 		} catch (MalformedURLException mue)
 		{
-			mue.printStackTrace();
-			throw mue;
+			System.out.println("Malformed Url:"+mue.getMessage());
+			return "";
 		} catch (IOException ioe)
 		{
-			System.out.println("IOException connecting via " + transceiver);
+			System.out.println("IOException connecting via " + transceiver+ "message:"+ioe.getMessage());
+			return "";
+		}
+		catch (NoSuchElementException nse)
+		{
 			return "";
 		}
 

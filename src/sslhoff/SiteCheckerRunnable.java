@@ -18,9 +18,10 @@ public class SiteCheckerRunnable implements Runnable {
 	
 
 	public void run() {
+		SslProxyConnect connector = new SslProxyConnect(proxyDefinition,logger);
 		for (String urlString : urlStrings)
 		{
-			SslProxyConnect connector = new SslProxyConnect(proxyDefinition,logger);
+			
 			try {
 				connector.connectTo(urlString);
 			} catch (Exception e) {

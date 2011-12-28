@@ -5,10 +5,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+
+import sun.misc.BASE64Encoder;
 
 public class X509CertificateLogger
 {
@@ -43,19 +47,28 @@ public class X509CertificateLogger
 	synchronized void log(String identifier,X509Certificate cert) throws CertificateEncodingException,
 			NoSuchAlgorithmException, IOException, InterruptedException
 	{
-		
+		//BASE64Encoder b64 = new BASE64Encoder();
+		//System.out.println(b64.encode(cert.getEncoded()));
 		String fileName = "";
 		MessageDigest sha = MessageDigest.getInstance("SHA");
-		sha.digest(cert.getEncoded());
-		fileName = folder + sha.digest().toString() + ".ser";
+		sha.reset();
+		sha.update(cert.getEncoded());
+		
+		fileName = folder + String.format("%X",new BigInteger(sha.digest())) + ".ser";
 		String logMessage = identifier+";"+fileName+"\r";
 		log.write(logMessage.getBytes());
 		File test = new File(fileName);
-		System.out.println("Writing"+fileName);
+		
 		if (!test.exists())
 		{
 			this.store(fileName, cert);
 		}
+		else
+		{
+			System.out.println("Duplicate:"+fileName);
+
+		}
+		
 	}
 
 }
