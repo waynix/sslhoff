@@ -25,7 +25,8 @@ public class SslProxyConnect
 		String resp = "";
 
 		URL url;
-		HttpsURLConnection urlConn;
+		HttpsURLConnection urlConn = null;
+		
 
 		DataInputStream input;
 
@@ -83,15 +84,17 @@ public class SslProxyConnect
 			
 		} catch (MalformedURLException mue)
 		{
-			System.out.println("Malformed Url:"+mue.getMessage());
+			System.err.println("Malformed Url:"+mue.getMessage());
 			return "";
 		} catch (IOException ioe)
 		{
-			System.out.println("IOException connecting via " + transceiver+ "message:"+ioe.getMessage());
+
+			System.err.println("IOException connecting via " + transceiver+ "message:"+ioe.getMessage());
 			return "";
 		}
 		catch (NoSuchElementException nse)
 		{
+			System.out.println("No Such element"+nse.getMessage());
 			return "";
 		}
 

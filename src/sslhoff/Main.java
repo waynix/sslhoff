@@ -25,7 +25,7 @@ public class Main
 	 */
 	public static void main(String[] args) throws IOException
 	{
-
+		
 		ProxyDefLoader loader = new ProxyDefLoader();
 		loader.load(args[0]);
 		LinkedList<String> urls = new LinkedList<String>();
