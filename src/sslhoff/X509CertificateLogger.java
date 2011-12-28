@@ -47,7 +47,7 @@ public class X509CertificateLogger
 		String fileName = "";
 		MessageDigest sha = MessageDigest.getInstance("SHA");
 		sha.digest(cert.getEncoded());
-		fileName = folder + sha.toString() + ".ser";
+		fileName = folder + sha.digest().toString() + ".ser";
 		String logMessage = identifier+";"+fileName+"\r";
 		log.write(logMessage.getBytes());
 		File test = new File(fileName);

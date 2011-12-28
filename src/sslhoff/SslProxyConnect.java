@@ -79,7 +79,12 @@ public class SslProxyConnect
 					.getServerCertificates();
 			for (X509Certificate x509Certificate : certlist)
 			{
-				logger.log(urlString+";"+this.transceiver.address(),x509Certificate);
+				try {
+					logger.log(urlString+";"+this.transceiver.address(),x509Certificate);
+				}
+				catch(NullPointerException e) {
+					
+				}
 			}
 			System.out.println();
 			

@@ -14,6 +14,7 @@ public class SiteChecker {
 	{
 		this.siteUrls = siteUrls;
 		this.proxyDefs = proxyDefs;
+		this.logger = logger;
 	}
 	
 	public void check() throws Exception
