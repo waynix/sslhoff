@@ -17,10 +17,12 @@ import com.sun.xml.internal.messaging.saaj.packaging.mime.util.BASE64EncoderStre
 public class SslProxyConnect
 {
 	private Proxy transceiver;
+	private X509CertificateLogger logger;
 
-	public SslProxyConnect(ProxyDefinition proxyDef)
+	public SslProxyConnect(ProxyDefinition proxyDef, X509CertificateLogger logger)
 	{
 		transceiver = new Proxy(proxyDef.getType(), proxyDef.getAddress());
+		this.logger = logger;
 	}
 
 	public String connectTo(String urlString) throws Exception
@@ -73,7 +75,7 @@ public class SslProxyConnect
 					.getServerCertificates();
 			for (X509Certificate x509Certificate : certlist)
 			{
-				//TODO Log This
+				logger.log(urlString+";"+this.transceiver.address(),x509Certificate);
 			}
 			System.out.println();
 			input.close();

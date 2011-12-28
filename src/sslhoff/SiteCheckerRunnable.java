@@ -1,27 +1,35 @@
 package sslhoff;
 
 import java.net.Proxy;
+import java.util.List;
 
 public class SiteCheckerRunnable implements Runnable {
 
 	private ProxyDefinition proxyDefinition;
-	private String urlString;
-	
-	SiteCheckerRunnable(ProxyDefinition proxyDefinition, String urlString)
+	private List<String> urlStrings;
+	X509CertificateLogger logger;
+	SiteCheckerRunnable(ProxyDefinition proxyDefinition, List<String> urlStrings, X509CertificateLogger logger)
 	{
 		this.proxyDefinition = proxyDefinition;
-		this.urlString = urlString;
+		this.urlStrings = urlStrings;
+		this.logger = logger;
+
 	}
 	
-	@Override
+
 	public void run() {
-		SslProxyConnect connector = new SslProxyConnect(proxyDefinition);
-		try {
-			connector.connectTo(urlString);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		for (String urlString : urlStrings)
+		{
+			SslProxyConnect connector = new SslProxyConnect(proxyDefinition,logger);
+			try {
+				connector.connectTo(urlString);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
+
 
 	}
 
