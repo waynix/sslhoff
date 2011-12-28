@@ -30,6 +30,7 @@ public class Main
 		loader.load(args[0]);
 		LinkedList<String> urls = new LinkedList<String>();
 		urls.add("https://www.google.com");
+		urls.add("https://heise.de");
 		
 		
 		ArrayList<ProxyDefinition> proxyDefs = loader.getProxyDefs();
@@ -47,6 +48,7 @@ public class Main
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
 		}
 		
 	}
