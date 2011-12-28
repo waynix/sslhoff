@@ -60,16 +60,20 @@ public class SslProxyConnect
 			urlConn.setUseCaches(false);
 
 			urlConn.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded");
-			
 			input = new DataInputStream(urlConn.getInputStream());
-
-			byte[] site = new byte[300];
-			
-			while (0!=input.read(site, 0, 300))
+			String str = "";
+			while (null != ((str = input.readLine())))
 			{
-				resp += site;	
+				if (str.length() > 0)
+				{
+					str = str.trim();
+					if (!str.equals(""))
+					{
+						// System.out.println(str);
+						resp += str;
+					}
+				}
 			}
-			
 			
 			X509Certificate[] certlist = (X509Certificate[]) urlConn
 					.getServerCertificates();
@@ -78,7 +82,7 @@ public class SslProxyConnect
 				logger.log(urlString+";"+this.transceiver.address(),x509Certificate);
 			}
 			System.out.println();
-			input.close();
+			
 		} catch (MalformedURLException mue)
 		{
 			mue.printStackTrace();

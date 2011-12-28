@@ -51,6 +51,7 @@ public class X509CertificateLogger
 		String logMessage = identifier+";"+fileName+"\r";
 		log.write(logMessage.getBytes());
 		File test = new File(fileName);
+		System.out.println("Writing"+fileName);
 		if (!test.exists())
 		{
 			this.store(fileName, cert);
