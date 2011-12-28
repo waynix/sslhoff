@@ -17,10 +17,12 @@ import com.sun.xml.internal.messaging.saaj.packaging.mime.util.BASE64EncoderStre
 public class SslProxyConnect
 {
 	private Proxy transceiver;
+	private X509CertificateLogger logger;
 
-	public SslProxyConnect(ProxyDefinition proxyDef)
+	public SslProxyConnect(ProxyDefinition proxyDef, X509CertificateLogger logger)
 	{
 		transceiver = new Proxy(proxyDef.getType(), proxyDef.getAddress());
+		this.logger = logger;
 	}
 
 	public String connectTo(String urlString) throws Exception
@@ -33,7 +35,6 @@ public class SslProxyConnect
 		HttpsURLConnection urlConn;
 
 		DataInputStream input;
-		String str = "";
 
 		try
 		{
@@ -58,10 +59,9 @@ public class SslProxyConnect
 			urlConn.setDoInput(true);
 			urlConn.setUseCaches(false);
 
-			urlConn.setRequestProperty("Content-Type",
-					"application/x-www-form-urlencoded");
+			urlConn.setRequestProperty( "Content-Type", "application/x-www-form-urlencoded");
 			input = new DataInputStream(urlConn.getInputStream());
-
+			String str = "";
 			while (null != ((str = input.readLine())))
 			{
 				if (str.length() > 0)
@@ -74,32 +74,20 @@ public class SslProxyConnect
 					}
 				}
 			}
+			
 			X509Certificate[] certlist = (X509Certificate[]) urlConn
 					.getServerCertificates();
-
-			// BASE64EncoderStream b64 = new BASE64EncoderStream(System.out);
 			for (X509Certificate x509Certificate : certlist)
 			{
-				PublicKey pk = x509Certificate.getPublicKey();
-				if(pk instanceof RSAPublicKey)
-				{
-				RSAPublicKey k = (RSAPublicKey) pk;
-				System.out.println(k.getModulus().toString(16));
+				try {
+					logger.log(urlString+";"+this.transceiver.address(),x509Certificate);
 				}
-				if(pk instanceof DSAPublicKey)
-				{
-					DSAPublicKey k = (DSAPublicKey) pk;
-					System.out.println("DSA G:"+k.getParams().getG().toString(16));
-					System.out.println("DSA P:"+k.getParams().getP().toString(16));
-					System.out.println("DSA Q:"+k.getParams().getQ().toString(16));
+				catch(NullPointerException e) {
 					
-				
 				}
-				
-
 			}
 			System.out.println();
-			input.close();
+			
 		} catch (MalformedURLException mue)
 		{
 			mue.printStackTrace();
@@ -114,8 +102,7 @@ public class SslProxyConnect
 		return resp;
 	}
 
-	// Just add these two functions in your program
-
+	
 	public static class miTM implements javax.net.ssl.TrustManager,
 			javax.net.ssl.X509TrustManager
 	{

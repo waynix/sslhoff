@@ -1,19 +1,20 @@
 package sslhoff;
 
-import java.net.InetSocketAddress;
-import java.net.Proxy;
+
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class SiteChecker {
-	private String siteUrl;
+	private List<String> siteUrls;
 	private ArrayList<ProxyDefinition> proxyDefs;
+	private X509CertificateLogger logger;
 	
-	
-	public SiteChecker(String siteUrl, ArrayList<ProxyDefinition> proxyDefs)
+	public SiteChecker(List<String> siteUrls, ArrayList<ProxyDefinition> proxyDefs, X509CertificateLogger logger)
 	{
-		this.siteUrl = siteUrl;
+		this.siteUrls = siteUrls;
 		this.proxyDefs = proxyDefs;
+		this.logger = logger;
 	}
 	
 	public void check() throws Exception
@@ -21,7 +22,7 @@ public class SiteChecker {
 		Iterator<ProxyDefinition> it = proxyDefs.iterator();
 		while(it.hasNext())
 		{
-			Thread th = new Thread(new SiteCheckerRunnable(it.next(), this.siteUrl));
+			Thread th = new Thread(new SiteCheckerRunnable(it.next(), this.siteUrls, logger));
 			th.start();
 		}
 	}
