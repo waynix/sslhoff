@@ -80,7 +80,7 @@ public class SslProxyConnect
 					}
 				}
 			}
-			this.logCerts(urlString,urlConn);
+			logCerts(urlString,urlConn);
 			
 			urlConn.disconnect();
 			
@@ -91,12 +91,15 @@ public class SslProxyConnect
 			return "";
 		} catch (IOException ioe)
 		{
-			if(ioe.getMessage().contains(""))
+			if(ioe.getMessage().contains("Server returned HTTP response code"))
 			{
-				
+				logCerts(urlString,urlConn);
 			}
-			System.err.print(urlString);
-			System.err.println("IOException connecting via " + transceiver+ "message:"+ioe.getMessage());
+			else{
+				System.err.print(urlString);
+				System.err.println("IOException connecting via " + transceiver+ "message:"+ioe.getMessage());
+			}
+			urlConn.disconnect();
 			return "";
 		}
 		catch (NoSuchElementException nse)
