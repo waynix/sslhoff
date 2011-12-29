@@ -18,12 +18,24 @@ public class X509CertificateLogger
 {
 	private String folder;
 	FileOutputStream log;
+	FileOutputStream error;
 
-	public X509CertificateLogger(String folder, String logFileName)
+	public X509CertificateLogger(String folder, String logFileName, String errorLogger)
 			throws IOException
 	{
 		this.log = new FileOutputStream(logFileName);
+		this.error = new FileOutputStream(logFileName);
 		this.folder = folder;
+	}
+	public void logError(String errorMessage) 
+	{
+		try
+		{
+			error.write(errorMessage.getBytes());
+		} catch (IOException e)
+		{
+			System.out.println("Could not log error");
+		}
 	}
 
 	private boolean store(String fileName, X509Certificate cert)
@@ -40,6 +52,7 @@ public class X509CertificateLogger
 		} else
 		{
 			System.out.println("could not Serialize Cert");
+			error.write("could not Serialize Cert".getBytes());
 		}
 		return false;
 	}

@@ -25,13 +25,22 @@ public class Main
 	 */
 	public static void main(String[] args) throws IOException
 	{
-		
+		if(args.length < 2)
+		{
+			System.out.println("Call this program with proxylistfile websitelistfile as parameters");
+			return;
+		}
 		ProxyDefLoader loader = new ProxyDefLoader();
 		loader.load(args[0]);
 		LinkedList<String> urls = new LinkedList<String>();
-		urls.add("https://www.google.com");
-		urls.add("https://heise.de");
+
 		
+		BufferedReader lineSeparatedUrls = new BufferedReader(new FileReader(args[1]));
+		while(lineSeparatedUrls.ready())
+		{
+			String line = lineSeparatedUrls.readLine();
+			urls.add(line);
+		}
 		
 		ArrayList<ProxyDefinition> proxyDefs = loader.getProxyDefs();
 		Iterator<ProxyDefinition> it = proxyDefs.iterator();
@@ -40,7 +49,7 @@ public class Main
 			ProxyDefinition def = it.next();
 			System.out.println(def);
 		}
-		X509CertificateLogger logger = new X509CertificateLogger("certs/", "log.csv");
+		X509CertificateLogger logger = new X509CertificateLogger("certs/", "log.csv", "error.log");
 		SiteChecker checker = new SiteChecker(urls, proxyDefs,logger);
 		
 		try {

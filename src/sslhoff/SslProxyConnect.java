@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.security.cert.X509Certificate;
 import java.util.NoSuchElementException;
+import java.util.concurrent.ExecutionException;
 
 
 import javax.net.ssl.*;
@@ -15,7 +16,14 @@ public class SslProxyConnect
 
 	public SslProxyConnect(ProxyDefinition proxyDef, X509CertificateLogger logger)
 	{
-		transceiver = new Proxy(proxyDef.getType(), proxyDef.getAddress());
+		if( proxyDef != null)
+		{
+			transceiver = new Proxy(proxyDef.getType(), proxyDef.getAddress());
+		}
+		else
+		{
+			transceiver = Proxy.NO_PROXY;
+		}
 		this.logger = logger;
 	}
 
@@ -49,7 +57,11 @@ public class SslProxyConnect
 			HttpsURLConnection.setDefaultHostnameVerifier(hv);
 
 			url = new URL(urlString);
+		
 			urlConn = (HttpsURLConnection) url.openConnection(transceiver);
+			urlConn.setConnectTimeout(4000);
+			urlConn.setReadTimeout(4000);
+			
 			urlConn.setDoInput(true);
 			urlConn.setUseCaches(false);
 
@@ -68,40 +80,64 @@ public class SslProxyConnect
 					}
 				}
 			}
+			this.logCerts(urlString,urlConn);
 			
-			X509Certificate[] certlist = (X509Certificate[]) urlConn
-					.getServerCertificates();
-			for (X509Certificate x509Certificate : certlist)
-			{
-				try {
-					logger.log(urlString+";"+this.transceiver.address(),x509Certificate);
-				}
-				catch(NullPointerException e) {
-					
-				}
-			}
 			urlConn.disconnect();
 			
 		} catch (MalformedURLException mue)
 		{
+			System.err.print(urlString);
 			System.err.println("Malformed Url:"+mue.getMessage());
 			return "";
 		} catch (IOException ioe)
 		{
-
+			if(ioe.getMessage().contains(""))
+			{
+				
+			}
+			System.err.print(urlString);
 			System.err.println("IOException connecting via " + transceiver+ "message:"+ioe.getMessage());
 			return "";
 		}
 		catch (NoSuchElementException nse)
 		{
-			System.out.println("No Such element"+nse.getMessage());
+			System.err.print(urlString);
+			System.err.println("No Such element"+nse.getMessage());
 			return "";
 		}
-
+		catch (IllegalStateException ise)
+		{
+			System.err.print(urlString);
+			System.err.println("Illegal State Exception"+ise.getMessage());
+			return "";
+		}
 		System.out.println("Success connecting via " + transceiver);
 		return resp;
 	}
-
+	public void logCerts(String urlString,HttpsURLConnection urlConn) 
+	{
+		try{
+		X509Certificate[] certlist = (X509Certificate[]) urlConn
+				.getServerCertificates();
+		int certchainstep = 0;
+		for (X509Certificate x509Certificate : certlist)
+		{
+			
+			try {
+				logger.log(urlString+";"+certchainstep+";"+this.transceiver.address(),x509Certificate);
+			}
+			catch(NullPointerException e) {
+				
+			}
+			certchainstep++;
+		}
+		}
+		catch(Exception e)
+		{
+				logger.logError(urlString + " "+ e.getMessage());
+			
+		}
+	}
 	
 	public static class miTM implements javax.net.ssl.TrustManager,
 			javax.net.ssl.X509TrustManager

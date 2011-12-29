@@ -1,6 +1,5 @@
 package sslhoff;
 
-import java.net.Proxy;
 import java.util.List;
 
 public class SiteCheckerRunnable implements Runnable {
