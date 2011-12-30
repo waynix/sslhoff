@@ -3,10 +3,7 @@ package sslhoff;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 public class OneCall

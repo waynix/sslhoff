@@ -10,10 +10,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-
-import sun.misc.BASE64Encoder;
-
 public class X509CertificateLogger
 {
 	private String folder;
